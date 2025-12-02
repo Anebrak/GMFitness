@@ -45,10 +45,11 @@ nav a:hover {
 /* Botones principales */
 .main-buttons {
   display: grid;
-  grid-template-columns: repeat(2, auto); /* columnas ajustadas al contenido */
-  gap: 20px; /* espacio entre botones */
-  justify-content: center; /* centra el grid */
-  padding: 20px;
+  grid-template-columns: repeat(2, auto); /* 2 columnas ajustadas al contenido */
+  justify-content: center;   /* centra horizontalmente */
+  align-content: center;     /* centra verticalmente el bloque completo */
+  gap: 30px;                 /* espacio entre botones */
+  height: 100vh;             /* ocupa toda la altura de la ventana */
 }
 
 .button-card {
