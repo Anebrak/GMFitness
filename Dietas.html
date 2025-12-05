@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GMFitness - Dietas</title>
+  <link rel="stylesheet" href="CSS/Dietas.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <button onclick="showSection('progreso')">Progreso</button>
+    <button onclick="showSection('dietas')">Dietas</button>
+    <button onclick="showSection('calendario')">Calendario</button>
+  </header>
+
+  <!-- Sección Progreso -->
+  <section id="progreso" class="active">
+    <h2>Progreso de Peso</h2>
+    <label for="mesSelect">Selecciona el mes:</label>
+    <select id="mesSelect">
+      <option value="Enero">Enero</option>
+      <option value="Febrero">Febrero</option>
+      <option value="Marzo">Marzo</option>
+      <option value="Abril">Abril</option>
+    </select>
+    <canvas id="pesoChart"></canvas>
+  </section>
+
+  <!-- Sección Dietas -->
+  <section id="dietas">
+    <h2>Tu Dieta</h2>
+    <div class="dietas-container">
+      <!-- Gráfico de macros -->
+      <div class="macros-chart">
+        <canvas id="macrosChart"></canvas>
+        <p id="caloriasTotales">Calorías totales: 2200 kcal</p>
+      </div>
+
+      <!-- Lista de comidas -->
+      <div class="comidas-lista">
+        <h3>Comidas del día</h3>
+        <ul>
+          <li><strong>Mañana:</strong> Avena con leche y frutas</li>
+          <li><strong>Tarde:</strong> Pollo con arroz y ensalada</li>
+          <li><strong>Noche:</strong> Pescado con verduras</li>
+        </ul>
+        <button id="agregarAlimento">Agregar alimento</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección Calendario -->
+  <section id="calendario">
+    <h2>Calendario</h2>
+    <div class="calendar" id="calendarGrid"></div>
+  </section>
+
+  <!-- JavaScript embebido -->
+  <script>
+    function showSection(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // Gráfico de Progreso de Peso
+    let pesoChart = new Chart(document.getElementById("pesoChart"), {
+      type: 'line',
+      data: {
+        labels: Array.from({length: 30}, (_, i) => "Día " + (i+1)),
+        datasets: [{
+          label: "Peso (kg)",
+          data: Array.from({length: 30}, () => 70 + Math.random()*3), // datos simulados
+          borderColor: "#ff6600",
+          backgroundColor: "rgba(255,102,0,0.3)"
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+
+    document.getElementById("mesSelect").addEventListener("change", function() {
+      // Aquí podrías cambiar los datos según el mes seleccionado
+      pesoChart.data.datasets[0].data = Array.from({length: 30}, () => 70 + Math.random()*3);
+      pesoChart.update();
+    });
+
+    // Gráfico de Macros
+    new Chart(document.getElementById("macrosChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ["Proteínas", "Carbohidratos", "Grasas"],
+        datasets: [{
+          data: [30, 50, 20], // porcentajes simulados
+          backgroundColor: ["#ff6600", "#00ccff", "#33cc33"]
+        }]
+      }
+    });
+
+    // Calendario simple
+    function generateCalendar() {
+      const grid = document.getElementById("calendarGrid");
+      const days = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+      days.forEach(d => {
+        let div = document.createElement("div");
+        div.innerText = d;
+        div.style.fontWeight = "bold";
+        grid.appendChild(div);
+      });
+      for (let i=1; i<=30; i++) {
+        let div = document.createElement("div");
+        div.innerText = i;
+        grid.appendChild(div);
+      }
+    }
+    generateCalendar();
+  </script>
+</body>
+</html>
