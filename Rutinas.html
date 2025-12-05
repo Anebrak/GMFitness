@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GMFitness - Rutinas</title>
+  <link rel="stylesheet" href="CSS/Rutinas.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <button onclick="showSection('progreso')">Progreso</button>
+    <button onclick="showSection('rutinas')">Rutinas</button>
+    <button onclick="showSection('calendario')">Calendario</button>
+  </header>
+
+  <!-- Sección Progreso -->
+  <section id="progreso" class="active">
+    <h2>Volumen de entrenamiento</h2>
+    <canvas id="volumenChart"></canvas>
+
+    <h2>Reps semanales</h2>
+    <canvas id="repsChart"></canvas>
+
+    <h2>Aumento de kg en ejercicios</h2>
+    <select id="ejercicioSelect">
+      <option value="Bench Press">Bench Press</option>
+      <option value="Squat">Squat</option>
+      <option value="Deadlift">Deadlift</option>
+    </select>
+    <canvas id="kgChart"></canvas>
+  </section>
+
+  <!-- Sección Rutinas -->
+  <section id="rutinas">
+    <h2 class="rutinas-title">Tus Rutinas</h2>
+    <div class="rutinas-buttons">
+      <button>PPL</button>
+      <button>FULL BODY</button>
+      <button>ARMS</button>
+      <button>UPPER/LOWER</button>
+    </div>
+    <h2 class="crear-title">Crear Rutina</h2>
+    <button class="crear-rutina">Crear Rutina</button>
+  </section>
+
+  <!-- Sección Calendario -->
+  <section id="calendario">
+    <h2>Calendario</h2>
+    <div class="calendar" id="calendarGrid"></div>
+  </section>
+
+  <!-- JavaScript embebido -->
+  <script>
+    function showSection(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function randomData(length, min, max) {
+      return Array.from({length}, () => Math.floor(Math.random() * (max - min + 1)) + min);
+    }
+
+    new Chart(document.getElementById("volumenChart"), {
+      type: 'line',
+      data: {
+        labels: ["Semana 1","Semana 2","Semana 3","Semana 4"],
+        datasets: [{
+          label: "Volumen",
+          data: randomData(4, 1000, 5000),
+          borderColor: "#ff6600",
+          backgroundColor: "rgba(255,102,0,0.3)"
+        }]
+      }
+    });
+
+    new Chart(document.getElementById("repsChart"), {
+      type: 'bar',
+      data: {
+        labels: ["Semana 1","Semana 2","Semana 3","Semana 4"],
+        datasets: [{
+          label: "Reps",
+          data: randomData(4, 1000, 5000),
+          backgroundColor: "#ff6600"
+        }]
+      }
+    });
+
+    let kgChart = new Chart(document.getElementById("kgChart"), {
+      type: 'line',
+      data: {
+        labels: ["Semana 1","Semana 2","Semana 3","Semana 4"],
+        datasets: [{
+          label: "Bench Press",
+          data: randomData(4, 100, 140),
+          borderColor: "#ff6600",
+          backgroundColor: "rgba(255,102,0,0.3)"
+        }]
+      }
+    });
+
+    document.getElementById("ejercicioSelect").addEventListener("change", function() {
+      kgChart.data.datasets[0].label = this.value;
+      kgChart.data.datasets[0].data = randomData(4, 100, 140);
+      kgChart.update();
+    });
+
+    function generateCalendar() {
+      const grid = document.getElementById("calendarGrid");
+      const days = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+      days.forEach(d => {
+        let div = document.createElement("div");
+        div.innerText = d;
+        div.style.fontWeight = "bold";
+        grid.appendChild(div);
+      });
+      for (let i=1; i<=30; i++) {
+        let div = document.createElement("div");
+        div.innerText = i;
+        grid.appendChild(div);
+      }
+    }
+    generateCalendar();
+  </script>
+</body>
+</html>
